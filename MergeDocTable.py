@@ -6,12 +6,15 @@ from win32com.client import Dispatch, constants
 from docx import Document
 import sys
 reload(sys)
-sys.setdefaultencoding('gbk') #gb2312,gbk 
+sys.setdefaultencoding('gb2312') #gb2312,gbk 
 true = True
 false = False
 
 def writeFile(s):
-    f=file("c:\\test\\result\\result.txt","a")
+    path = "c:\\test\\result"
+    if not os.path.exists(path):
+          os.makedirs(path)
+    f=file(path + "\\result.csv","a")
     f.writelines(s)
     f.close()
 
