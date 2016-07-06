@@ -27,7 +27,8 @@ def remove_control_chars(s):
 
 def parse_doc(f):
   doc = w.Documents.Open( FileName = f )
-  count=doc.Paragraphs[1]
+  count=""                        
+  # count=doc.Paragraphs[2]     ##读取标题
   # print (str(count))
   for t in doc.Tables:       
         for row in t.Rows:  
@@ -38,7 +39,8 @@ def parse_doc(f):
   doc.Close()
 def parse_docx(f):
   d = Document(f)
-  count=d.paragraphs[1].text
+  count=""
+  # count=d.paragraphs[2].text    ##读取标题
   for t in d.tables:
         for row in t.rows: 
           rowString=""
@@ -50,15 +52,16 @@ def parse_docx(f):
 if __name__ == "__main__":
   w = win32com.client.Dispatch('Word.Application')
   PATH = "c:\\test"
-  doc_files = os.listdir(PATH)
-  for doc in doc_files:
-    if os.path.splitext(doc)[1] == '.docx' and doc[0]!='~':
-      try:
-        parse_docx(PATH+'\\'+doc)
-      except Exception as e:
-         print (e)
-    elif os.path.splitext(doc)[1] == '.doc' and doc[0]!='~':
-      try:
-        parse_doc(PATH+'\\'+doc)
-      except Exception as e:
-         print (e)
+  # doc_files = os.listdir(PATH)
+  for parent,dirs,files in os.walk(PATH):        
+        for doc in files:
+          if os.path.splitext(doc)[1] == '.docx' and doc[0]!='~':
+            try:
+              parse_docx(parent+'\\'+doc)
+            except Exception as e:
+              print (e)
+          elif os.path.splitext(doc)[1] == '.doc' and doc[0]!='~':
+            try:
+              parse_doc(parent+'\\'+doc)
+            except Exception as e:
+              print (e)
